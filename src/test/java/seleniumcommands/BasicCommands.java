@@ -13,11 +13,13 @@ public class BasicCommands {
         driver.get("https://selenium.obsqurazone.com/index.php");
         driver.manage().window().maximize();
         driver.close();
+
         /**Launching Edge driver**/
         driver = new EdgeDriver();
         driver.get("https://selenium.obsqurazone.com/index.php");
         driver.manage().window().maximize();
         driver.close();
+
         /**Launching Firefox driver**/
         driver = new FirefoxDriver();
         driver.get("https://selenium.obsqurazone.com/index.php");
