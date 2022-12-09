@@ -8,7 +8,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class BasicCommands {
     public static void main(String[] args) {
         WebDriver driver;
-
         /** Creating webdriver instance**/
         driver = new ChromeDriver();
         driver.get("https://selenium.obsqurazone.com/index.php");
