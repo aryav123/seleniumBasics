@@ -7,20 +7,23 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class BasicCommands {
     public static void main(String[] args) {
-//        Creating webdriver instance
-        WebDriver driver1 = new ChromeDriver();
-        WebDriver driver2 = new EdgeDriver();
-        WebDriver driver3 = new FirefoxDriver();
+        WebDriver driver;
 
-//        Maximizing window
-        driver1.manage().window().maximize();
-        driver2.manage().window().maximize();
-        driver3.manage().window().maximize();
-
-//        Closing the browser
-        driver1.close();
-        driver2.close();
-        driver3.close();
+        /** Creating webdriver instance**/
+        driver = new ChromeDriver();
+        driver.get("https://selenium.obsqurazone.com/index.php");
+        driver.manage().window().maximize();
+        driver.close();
+        /**Launching Edge driver**/
+        driver = new EdgeDriver();
+        driver.get("https://selenium.obsqurazone.com/index.php");
+        driver.manage().window().maximize();
+        driver.close();
+        /**Launching Firefox driver**/
+        driver = new FirefoxDriver();
+        driver.get("https://selenium.obsqurazone.com/index.php");
+        driver.manage().window().maximize();
+        driver.close();
 
     }
 }
