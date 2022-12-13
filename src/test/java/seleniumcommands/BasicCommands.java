@@ -14,9 +14,9 @@ public class BasicCommands {
         driver.get("https://selenium.obsqurazone.com/index.php");
         String currentURL = driver.getCurrentUrl();
         System.out.println(currentURL);
-        String title=driver.getTitle();                 /** Get title**/
+        String title = driver.getTitle();                 /** Get title**/
         System.out.println(title);
-        String sourceCode=driver.getPageSource();       /** Get sourcecode**/
+        String sourceCode = driver.getPageSource();       /** Get sourcecode**/
         System.out.println(sourceCode);
         driver.close();
 
