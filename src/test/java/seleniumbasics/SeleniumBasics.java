@@ -63,6 +63,7 @@ SeleniumBasics {
         String expectedMessage = "Your Message : Test";
         Assert.assertEquals(actualMessage, expectedMessage, "Invalid Message found");
     }
+
     @Test
     public void TC_003_verifyTwoInputFieldMessage() {
         driver.get("https://selenium.obsqurazone.com/simple-form-demo.php");
@@ -77,6 +78,7 @@ SeleniumBasics {
         String expectedMessage = "Total A + B : 6";
         Assert.assertEquals(actualMessage, expectedMessage, "Invalid Message found");
     }
+
     @Test
     public void TC_004_verifyEmptyFieldvalidation() {
         driver.get("https://selenium.obsqurazone.com/form-submit.php");
@@ -104,6 +106,7 @@ SeleniumBasics {
         Assert.assertEquals(zipFieldValidation.getText(), expectedZipFieldErrorMessage, "Invalid Message found");
         Assert.assertEquals(termsConditionFieldValidation.getText(), expectedTermsConditionFieldErrorMessage, "Invalid Message found");
     }
+
     @Test
     public void TC_005_verifyEmptyStateZipCode() {
         driver.get("https://selenium.obsqurazone.com/form-submit.php");
@@ -127,6 +130,7 @@ SeleniumBasics {
         Assert.assertEquals(stateFieldValidation.getText(), expectedStateFieldErrorMessage, "Invalid Message found");
         Assert.assertEquals(termsConditionFieldValidation.getText(), expectedTermsConditionFieldErrorMessage, "Invalid Message found");
     }
+
     @Test
     public void TC_006_verifySucessfullFormSubmission() {
         driver.get("https://selenium.obsqurazone.com/form-submit.php");
@@ -137,9 +141,9 @@ SeleniumBasics {
         WebElement stateField = driver.findElement(By.xpath("//input[@id='validationCustom04']"));
         WebElement zipField = driver.findElement(By.xpath("//input[@id='validationCustom05']"));
         WebElement submitButton = driver.findElement(By.xpath("//button[@class='btn btn-primary']"));
-        WebElement successValidationMessage=driver.findElement((By.xpath("//button[@class='btn btn-primary']/following-sibling::div")));
+        WebElement successValidationMessage = driver.findElement((By.xpath("//button[@class='btn btn-primary']/following-sibling::div")));
         String expectedSuccessMessage = "Form has been submitted successfully!";
-        WebElement termsCondition= driver.findElement(By.xpath("//input[@id='invalidCheck']"));
+        WebElement termsCondition = driver.findElement(By.xpath("//input[@id='invalidCheck']"));
         firstname.sendKeys("arya");
         lastName.sendKeys("v");
         userName.sendKeys("aryav123");
@@ -149,6 +153,42 @@ SeleniumBasics {
         termsCondition.click();
         submitButton.click();
         Assert.assertEquals(successValidationMessage.getText(), expectedSuccessMessage, "Invalid Message found");
+    }
+
+    @Test
+    public void TC_007_verifyNewsletterSubscription() {
+        driver.get("https://demowebshop.tricentis.com");
+        WebElement emailField = driver.findElement(By.cssSelector("#newsletter-email"));
+        WebElement subscribeButton = driver.findElement(By.cssSelector("#newsletter-subscribe-button"));
+        emailField.sendKeys("test@gmail.com");
+        subscribeButton.click();
+    }
+
+    @Test
+    public void TC_008_verifyInstantDemoRequestForm() {
+        driver.get("https://phptravels.com/demo/");
+        WebElement inputFieldFirstName = driver.findElement(By.cssSelector("input.first_name"));
+        WebElement inputFieldLastName = driver.findElement(By.cssSelector("input.last_name"));
+        WebElement inputFieldBusinessName = driver.findElement(By.cssSelector("input.business_name"));
+        WebElement inputFieldEmail = driver.findElement(By.cssSelector("input.email"));
+        WebElement buttonSubmit = driver.findElement(By.cssSelector("button#demo"));
+        WebElement number1 = driver.findElement(By.cssSelector("span#numb1"));
+        WebElement number2 = driver.findElement(By.cssSelector("span#numb2"));
+        WebElement resultField = driver.findElement(By.cssSelector("input#number"));
+        WebElement completedBox = driver.findElement(By.cssSelector("div.completed"));
+        inputFieldFirstName.sendKeys("arya");
+        inputFieldLastName.sendKeys("v");
+        inputFieldBusinessName.sendKeys("aryav123");
+        inputFieldEmail.sendKeys("test@gmail.com");
+        String numberFieldValue1 = number1.getText();
+        String numberFieldValue2 = number2.getText();
+        int num1 = Integer.parseInt(numberFieldValue1);
+        int num2 = Integer.parseInt(numberFieldValue2);
+        int sum = num1 + num2;
+        String sumText = String.valueOf(sum);
+        resultField.sendKeys(sumText);
+        buttonSubmit.click();
+        completedBox.isDisplayed();
     }
 }
 
