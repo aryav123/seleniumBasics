@@ -40,7 +40,8 @@ SeleniumBasics {
 
     @AfterMethod
     public void tearDown() {
-        driver.close();
+//        driver.close();
+        driver.quit();
     }
 
     @Test
@@ -189,6 +190,50 @@ SeleniumBasics {
         resultField.sendKeys(sumText);
         buttonSubmit.click();
         completedBox.isDisplayed();
+    }
+    @Test
+    public void TC_008_verifyQuitAndClose() {
+        driver.get("https://demo.guru99.com/popup.php");
+        WebElement clickHereButton = driver.findElement(By.xpath("//a[text()='Click Here']"));
+        clickHereButton.click();
+
+    }
+    @Test
+    public void TC_009_verifyNavigateTo() {
+//        driver.get("https://demowebshop.tricentis.com");
+       driver.navigate().to("https://demowebshop.tricentis.com");
+
+    }
+    @Test
+    public void TC_010_verifyRefresh() {
+        driver.get("https://demowebshop.tricentis.com");
+        WebElement newsLetterEmailField= driver.findElement(By.xpath("//input[@id='newsletter-email']"));
+        newsLetterEmailField.sendKeys("test@gmail.com");
+        driver.navigate().refresh();
+
+    }
+    @Test
+    public void TC_011_verifyForwardAndBackward() throws InterruptedException {
+        driver.get("https://demowebshop.tricentis.com");
+        WebElement loginMenu= driver.findElement(By.xpath("//a[text()='Log in']"));
+        loginMenu.click();
+        driver.navigate().back();
+        Thread.sleep(2000);
+        driver.navigate().forward();
+    }
+    @Test
+    public void TC_012_verifyWebElementsCommand() throws InterruptedException {
+        driver.get("https://selenium.obsqurazone.com/ajax-form-submit.php");
+        WebElement subjectField= driver.findElement(By.xpath("//input[@id='subject']"));
+        subjectField.sendKeys("Selenium");
+        WebElement descriptionField= driver.findElement(By.xpath("//textarea[@id='description']"));
+        descriptionField.sendKeys("Automation Testing");
+        WebElement submitButton= driver.findElement(By.xpath("//input[@class='btn btn-primary']"));
+        submitButton.click();
+        Thread.sleep(10000);
+        WebElement successValidationMessage= driver.findElement(By.id("message-one"));
+        String expectedValidationMessage="Form has been submitted successfully!";
+        Assert.assertEquals(successValidationMessage.getText(),expectedValidationMessage,"Invalid Message");
     }
 }
 
