@@ -1,8 +1,6 @@
 package seleniumbasics;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -10,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 public class
 SeleniumBasics {
@@ -191,6 +191,7 @@ SeleniumBasics {
         buttonSubmit.click();
         completedBox.isDisplayed();
     }
+
     @Test
     public void TC_008_verifyQuitAndClose() {
         driver.get("https://demo.guru99.com/popup.php");
@@ -198,42 +199,95 @@ SeleniumBasics {
         clickHereButton.click();
 
     }
+
     @Test
     public void TC_009_verifyNavigateTo() {
 //        driver.get("https://demowebshop.tricentis.com");
-       driver.navigate().to("https://demowebshop.tricentis.com");
+        driver.navigate().to("https://demowebshop.tricentis.com");
 
     }
+
     @Test
     public void TC_010_verifyRefresh() {
         driver.get("https://demowebshop.tricentis.com");
-        WebElement newsLetterEmailField= driver.findElement(By.xpath("//input[@id='newsletter-email']"));
+        WebElement newsLetterEmailField = driver.findElement(By.xpath("//input[@id='newsletter-email']"));
         newsLetterEmailField.sendKeys("test@gmail.com");
         driver.navigate().refresh();
 
     }
+
     @Test
     public void TC_011_verifyForwardAndBackward() throws InterruptedException {
         driver.get("https://demowebshop.tricentis.com");
-        WebElement loginMenu= driver.findElement(By.xpath("//a[text()='Log in']"));
+        WebElement loginMenu = driver.findElement(By.xpath("//a[text()='Log in']"));
         loginMenu.click();
         driver.navigate().back();
         Thread.sleep(2000);
         driver.navigate().forward();
     }
+
     @Test
     public void TC_012_verifyWebElementsCommand() throws InterruptedException {
         driver.get("https://selenium.obsqurazone.com/ajax-form-submit.php");
-        WebElement subjectField= driver.findElement(By.xpath("//input[@id='subject']"));
+        WebElement subjectField = driver.findElement(By.xpath("//input[@id='subject']"));
         subjectField.sendKeys("Selenium");
-        WebElement descriptionField= driver.findElement(By.xpath("//textarea[@id='description']"));
+        WebElement descriptionField = driver.findElement(By.xpath("//textarea[@id='description']"));
         descriptionField.sendKeys("Automation Testing");
-        WebElement submitButton= driver.findElement(By.xpath("//input[@class='btn btn-primary']"));
+        WebElement submitButton = driver.findElement(By.xpath("//input[@class='btn btn-primary']"));
+        subjectField.clear();
+        String classAttributeValue = subjectField.getAttribute("class");
+        System.out.println("test" + classAttributeValue);
+        String TagNameValue = subjectField.getTagName();
+        System.out.println("test" + TagNameValue);
+        subjectField.sendKeys("Selenium Testing");
         submitButton.click();
         Thread.sleep(10000);
-        WebElement successValidationMessage= driver.findElement(By.id("message-one"));
-        String expectedValidationMessage="Form has been submitted successfully!";
-        Assert.assertEquals(successValidationMessage.getText(),expectedValidationMessage,"Invalid Message");
+        WebElement successValidationMessage = driver.findElement(By.id("message-one"));
+        String expectedValidationMessage = "Form has been submitted successfully!";
+        Assert.assertEquals(successValidationMessage.getText(), expectedValidationMessage, "Invalid Message");
+    }
+
+    @Test
+    public void TC_013_verifyIsDisplayed() throws InterruptedException {
+        driver.get("https://selenium.obsqurazone.com/ajax-form-submit.php");
+        WebElement subjectField = driver.findElement(By.xpath("//input[@id='subject']"));
+        subjectField.sendKeys("Selenium");
+        boolean status = subjectField.isDisplayed();
+        System.out.println(status);
+        Assert.assertTrue(status, "Subject field is not displayed");
+    }
+
+    @Test
+    public void TC_014_verifyIsSelected() throws InterruptedException {
+        driver.get("https://selenium.obsqurazone.com/check-box-demo.php");
+        WebElement singleDemoCheckBox = driver.findElement(By.xpath("//input[@id='gridCheck']"));
+        boolean statusBeforeClick = singleDemoCheckBox.isSelected();
+        System.out.println(statusBeforeClick);
+        Assert.assertFalse(statusBeforeClick, "Checkbox is selected");
+        singleDemoCheckBox.click();
+        boolean status = singleDemoCheckBox.isSelected();
+        System.out.println(status);
+        Assert.assertTrue(status, "Checkbox is not selected");
+    }
+
+    @Test
+    public void TC_015_verifyIsEnabled() throws InterruptedException {
+        driver.get("https://selenium.obsqurazone.com/ajax-form-submit.php");
+        WebElement submitButton = driver.findElement(By.xpath("//input[@class='btn btn-primary']"));
+        boolean status = submitButton.isEnabled();
+        System.out.println(status);
+        Assert.assertTrue(status, "submit button not enabled");
+        Point point = submitButton.getLocation();
+        System.out.println(point.x + "," + point.y);
+        Dimension dim = submitButton.getSize();
+        System.out.println(dim.height + "," + dim.width);
+        String backgroundColor = submitButton.getCssValue("background-color");
+        System.out.println(backgroundColor);
+        WebElement element = driver.findElement(By.tagName("input"));
+        System.out.println(element);
+        List<WebElement> elements = driver.findElements(By.tagName("input"));
+        System.out.println(elements);
+        submitButton.submit();
     }
 }
 
