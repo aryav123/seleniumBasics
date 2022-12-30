@@ -4,12 +4,16 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import javax.swing.*;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class
 SeleniumBasics {
@@ -289,5 +293,204 @@ SeleniumBasics {
         System.out.println(elements);
         submitButton.submit();
     }
+
+    @Test
+    public void TC_017_VerifyTheMessageDisplayedInNewTab() throws InterruptedException {
+        driver.get("https://demoqa.com/browser-windows");
+        WebElement newTabButton = driver.findElement(By.id("tabButton"));
+        boolean status = newTabButton.isEnabled();
+        Assert.assertTrue(status, "submit button not enabled");
+        newTabButton.click();
+        driver.navigate().to("https://demoqa.com/sample");
+        WebElement sampleHeading = driver.findElement(By.id("sampleHeading"));
+        String actualMessage = sampleHeading.getText();
+        String expectedText = "This is a sample page";
+        Assert.assertEquals(actualMessage, expectedText, "Invalid message");
+    }
+
+    @Test
+    public void TC_018_VerifyTheMessageDisplayedInNewTab() throws InterruptedException {
+        driver.get("https://demoqa.com/browser-windows");
+        WebElement newTabButton = driver.findElement(By.id("tabButton"));
+        boolean status = newTabButton.isEnabled();
+        Assert.assertTrue(status, "submit button not enabled");
+        newTabButton.click();
+        driver.navigate().to("https://demoqa.com/sample");
+        WebElement sampleHeading = driver.findElement(By.id("sampleHeading"));
+        String actualMessage = sampleHeading.getText();
+        String expectedText = "This is a sample page";
+        Assert.assertEquals(actualMessage, expectedText, "Invalid message");
+    }
+
+    @Test
+    public void TC_019_VerifyTheMessageDisplayedInNewWindow() throws InterruptedException {
+        driver.get("https://demoqa.com/browser-windows");
+        String parentWindow = driver.getWindowHandle();
+        System.out.println("parent window id =" + parentWindow);
+        WebElement newWindowClickButton = driver.findElement(By.id("windowButton"));
+        newWindowClickButton.click();
+        Set<String> handles = driver.getWindowHandles();
+        System.out.println(handles);
+        Iterator<String> handleIds = handles.iterator();
+        while (handleIds.hasNext()) {
+            String childWindow = handleIds.next();
+            if (!childWindow.equals(parentWindow)) {
+                driver.switchTo().window(childWindow);
+                WebElement simpleHeading = driver.findElement(By.id("sampleHeading"));
+                String actualText = simpleHeading.getText();
+                String expectedText = "This is a sample page";
+                Assert.assertEquals(actualText, expectedText, "Message not found");
+                driver.close();
+
+            }
+        }
+        driver.switchTo().window(parentWindow);
+    }
+
+    @Test
+    public void TC_20VerifyTheTextDisplayedInNewWindow() throws InterruptedException {
+        driver.get("https://demoqa.com/browser-windows");
+        String parentWindow = driver.getWindowHandle();
+        System.out.println("parent window id =" + parentWindow);
+        WebElement newWindowMessageButton = driver.findElement(By.id("messageWindowButton"));
+        newWindowMessageButton.click();
+        Set<String> handles = driver.getWindowHandles();
+        System.out.println(handles);
+        Iterator<String> handleIds = handles.iterator();
+        while (handleIds.hasNext()) {
+            String childWindow = handleIds.next();
+            if (!childWindow.equals(parentWindow)) {
+                driver.switchTo().window(childWindow);
+//                WebElement simpleHeading = driver.findElement(By.id("sampleHeading"));
+                String actualText = driver.getPageSource();
+                String expectedText = "Knowledge increases by sharing but not by saving. Please share this website with your friends and in your organization.";
+                Assert.assertEquals(actualText, expectedText, "Message not found");
+                driver.close();
+
+            }
+        }
+        driver.switchTo().window(parentWindow);
+    }
+
+    @Test
+    public void TC_021_VerifySimpleAlert() throws InterruptedException {
+        driver.get("https://selenium.obsqurazone.com/javascript-alert.php");
+        WebElement clickMe = driver.findElement(By.xpath("//button[@class='btn btn-success']"));
+        clickMe.click();
+        Alert alert = driver.switchTo().alert();
+        String alertText = alert.getText();
+        System.out.println(alertText);
+        alert.accept();
+    }
+
+    @Test
+    public void TC_022_VerifyConfirmAlert() throws InterruptedException {
+        driver.get("https://selenium.obsqurazone.com/javascript-alert.php");
+        WebElement clickMe = driver.findElement(By.xpath("//button[@class='btn btn-warning']"));
+        clickMe.click();
+        Alert alert = driver.switchTo().alert();
+        String alertText = alert.getText();
+        System.out.println(alertText);
+        alert.dismiss();
+    }
+
+    @Test
+    public void TC_023_VerifyPromptAlert() throws InterruptedException {
+        driver.get("https://selenium.obsqurazone.com/javascript-alert.php");
+        WebElement clickMe = driver.findElement(By.xpath("//button[@class='btn btn-danger']"));
+        clickMe.click();
+        Alert alert = driver.switchTo().alert();
+        String alertText = alert.getText();
+        System.out.println(alertText);
+        alert.sendKeys("Text message");
+        alert.accept();
+    }
+
+    @Test
+    public void TC_024_VerifyTextInAFrame() throws InterruptedException {
+        driver.get("https://demoqa.com/frames");
+        List<WebElement> frames = driver.findElements(By.tagName("iframe"));
+        int numberofFrames = frames.size();
+        System.out.println(numberofFrames);
+//        driver.switchTo().frame(3);
+//        driver.switchTo().frame("frame1");
+        WebElement frame = driver.findElement(By.id("frame1"));
+        driver.switchTo().frame(frame);
+        WebElement heading = driver.findElement(By.id("sampleHeading"));
+        String headingText = heading.getText();
+        System.out.println(headingText);
+//        driver.switchTo().parentFrame();
+        driver.switchTo().defaultContent();
+    }
+
+    @Test
+    public void TC_025_DifferenceBtwFindElementAndFineElements() {
+        driver.get("https://selenium.obsqurazone.com/radio-button-demo.php");
+        List<WebElement> genders = driver.findElements(By.xpath("//input[@name='student-gender']"));
+        System.out.println(genders);
+        for (int i = 0; i < genders.size(); i++) {
+            String gender = genders.get(i).getAttribute("value"); // Male will be saved
+            if (gender.equals("Male")) {
+                genders.get(i).click();
+            }
+        }
+    }
+
+    @Test
+    public void TC_026_VerifyRightClick() {
+        driver.get("https://demo.guru99.com/test/simple_context_menu.html");
+        WebElement rightClickButton = driver.findElement(By.xpath("//span[@class='context-menu-one btn btn-neutral']"));
+        Actions action = new Actions(driver);
+        action.contextClick(rightClickButton).build().perform();
+//        action.contextClick().build().perform();
+    }
+
+    @Test
+    public void TC_027_VerifyDoubleClick() {
+        driver.get("https://demo.guru99.com/test/simple_context_menu.html");
+        WebElement rightClickButton = driver.findElement(By.xpath("//button[text()='Double-Click Me To See Alert']"));
+        Actions action = new Actions(driver);
+        action.doubleClick(rightClickButton).build().perform();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+    }
+
+    @Test
+    public void TC_028_VerifyMouseOver() {
+        driver.get("https://demoqa.com/menu/");
+        WebElement mainItem1 = driver.findElement(By.xpath("//a[text()='Main Item 1']"));
+        Actions action = new Actions(driver);
+        action.moveToElement(mainItem1).build().perform();
+//        action.moveToElement(mainItem1,50,50).build().perform();
+//        action.moveByOffset(40,80).build().perform();
+    }
+
+    @Test
+    public void TC_028_VerifyDragAndDrop() {
+        driver.get("https://demoqa.com/droppable");
+        WebElement dragMe = driver.findElement(By.id("draggable"));
+        WebElement dropHere = driver.findElement(By.id("droppable"));
+        Actions action = new Actions(driver);
+        action.dragAndDrop(dragMe, dropHere).build().perform();
+//        action.moveToElement(mainItem1,50,50).build().perform();
+//        action.moveByOffset(40,80).build().perform();
+    }
+
+    @Test
+    public void TC_029_VerifyDragAndDropByOffset() {
+        driver.get("https://demoqa.com/dragabble");
+        WebElement dragBox = driver.findElement(By.xpath("//div[@id='dragBox']"));
+        Actions action = new Actions(driver);
+        action.dragAndDropBy(dragBox, 100, 100).build().perform();
+    }
+
+    @Test
+    public void TC_030_VerifyClickAndHold() {
+        driver.get("https://demoqa.com/resizable");
+        WebElement dragBox = driver.findElement(By.xpath("//div[@id='dragBox']"));
+        Actions action = new Actions(driver);
+        action.dragAndDropBy(dragBox, 100, 100).build().perform();
+    }
 }
+
 
