@@ -485,12 +485,27 @@ SeleniumBasics {
     }
 
     @Test
-    public void TC_030_VerifyClickAndHold() {
+    public void TC_030_VerifyClickAndHoldResize() {
         driver.get("https://demoqa.com/resizable");
-        WebElement dragBox = driver.findElement(By.xpath("//div[@id='dragBox']"));
+        WebElement dragBox = driver.findElement(By.xpath("//div[@id='resizableBoxWithRestriction']/child::span"));
         Actions action = new Actions(driver);
+        action.clickAndHold(dragBox).build().perform();
         action.dragAndDropBy(dragBox, 100, 100).build().perform();
     }
+
+    @Test
+    public void TC_031_VerifyDragAndDropMultipleBoxes() {
+        driver.get("https://selenium.obsqurazone.com/drag-drop.php");
+        WebElement dragBox1 = driver.findElement(By.xpath("//div[@id='todrag']/child::span[text()='Draggable n°1']"));
+        WebElement dragBox2 = driver.findElement(By.xpath("//div[@id='todrag']/child::span[text()='Draggable n°2']"));
+        WebElement dragBox3 = driver.findElement(By.xpath("//div[@id='todrag']/child::span[text()='Draggable n°3']"));
+        WebElement dragBox4 = driver.findElement(By.xpath("//div[@id='todrag']/child::span[text()='Draggable n°4']"));
+        WebElement dropHere = driver.findElement(By.xpath("//div[@id='mydropzone']"));
+        Actions action = new Actions(driver);
+        action.dragAndDrop(dragBox1, dropHere).build().perform();
+        action.dragAndDrop(dragBox2, dropHere).build().perform();
+        action.dragAndDrop(dragBox3, dropHere).build().perform();
+        action.dragAndDrop(dragBox4, dropHere).build().perform();
+
+    }
 }
-
-
