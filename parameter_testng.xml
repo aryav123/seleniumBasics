@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameter Suite">
+    <test name="Parameter Test">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="base_url" value="https://demowebshop.tricentis.com/"/>
+        <parameter name="uName" value="mini@yopmail.com"/>
+        <parameter name="pWord" value="Test@123"/>
+        <classes>
+            <class name="seleniumbasics.DemoWebShop">
+                <methods>
+                    <include name="TC_001_verifyObsquraTitle"/>
+                    <include name="TC_002_verifyLogin"/>
+                    <include name="TC_003_verifyRegistration"/>
+                    <include name="TC_004_verifyTitleFromExcelSheet"/>
+                    <include name="TC_005_verifyRegisterPageFromExcelSheet"/>
+                    <include name="TC_006_verifyLoginWithInvalidDatas"/>
+                    <include name="TC_007_verifyRegistrationUsingRandomGenerator"/>
+                    <include name="TC_008_verifyDemoWebShopTitleHomeWork"/>
+                    <include name="TC_009_verifyLoginWithValidDatas"/>
+                    <include name="TC_010_verifyLoginWithValidDatasUsingParameters"/>
+                    <include name="TC_011_verifyRegisterPageFromExcelSheetAndMailAsRandomGenrator"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

@@ -2,6 +2,8 @@ package seleniumbasics;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -9,18 +11,21 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public class
 SeleniumBasics {
@@ -44,6 +49,36 @@ SeleniumBasics {
         driver.manage().deleteAllCookies();
     }
 
+    @BeforeSuite
+    public void beforeSuite() {
+        System.out.println("This is before suite");
+    }
+
+    @BeforeTest
+    public void beforeTest() {
+        System.out.println("This is before test");
+    }
+
+    @BeforeClass
+    public void beforeClass() {
+        System.out.println("This is before class");
+    }
+
+    @AfterSuite
+    public void afterSuite() {
+        System.out.println("This is after suite");
+    }
+
+    @AfterTest
+    public void afterTest() {
+        System.out.println("This is after test");
+    }
+
+    @AfterClass
+    public void afterClass() {
+        System.out.println("This is after class");
+    }
+
     @BeforeMethod
     public void setUp() {
         testInitialise("chrome");
@@ -57,14 +92,14 @@ SeleniumBasics {
             FileUtils.copyFile(screenshot, new File("./Screenshots/" + result.getName() + ".png"));
         }
 //        driver.close();
-//        driver.quit();
+        driver.quit();
     }
 
     @Test
     public void TC_001_verifyObsquraTitle() {
         driver.get("https://selenium.obsqurazone.com/index.php");
         String actualTitle = driver.getTitle();                 /** Get title**/
-        String expectedTitle = "Obsqura Testing1";
+        String expectedTitle = "Obsqura Testing";
         Assert.assertEquals(actualTitle, expectedTitle, "Invalid Title found");
     }
 
@@ -578,6 +613,7 @@ SeleniumBasics {
         js.executeScript("document.getElementById('newsletter-subscribe-button').click()");
 
     }
+
     @Test
     public void TC_036_verifyWaitInSelenium() {
         driver.get("https://demowebshop.tricentis.com/");
@@ -585,56 +621,110 @@ SeleniumBasics {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         /* Implicit wait */
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        WebElement emailField= driver.findElement(By.xpath("//input[@id='newsletter-email']"));
+        WebElement emailField = driver.findElement(By.xpath("//input[@id='newsletter-email']"));
         emailField.sendKeys("test@gmail.com");
-        WebElement subscribeButton=driver.findElement(By.xpath("//input[@id='newsletter-subscribe-button']"));
+        WebElement subscribeButton = driver.findElement(By.xpath("//input[@id='newsletter-subscribe-button']"));
         /*Explicit wait*/
-        WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(subscribeButton));
         /*Fluent wait*/
-        FluentWait fwait= new FluentWait<>(driver);
+        FluentWait fwait = new FluentWait<>(driver);
         fwait.withTimeout(Duration.ofSeconds(10));
         fwait.pollingEvery(Duration.ofSeconds(1));
         fwait.until(ExpectedConditions.visibilityOf(subscribeButton));
         subscribeButton.click();
 
     }
+
     @Test
     public void TC_037_verifyScrollDownOfAWebPage() {
         driver.get("https://demo.guru99.com/test/guru99home/");
-        JavascriptExecutor js=(JavascriptExecutor) driver;
+        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,1000)");
 
     }
+
     @Test
     public void TC_037_verifyScrollIntoViewOfAWebElement() {
         driver.get("https://demo.guru99.com/test/guru99home/");
-        WebElement linuxElement=driver.findElement(By.linkText("Linux"));
-        JavascriptExecutor js=(JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView();",linuxElement);
+        WebElement linuxElement = driver.findElement(By.linkText("Linux"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", linuxElement);
 
     }
+
     @Test
     public void TC_038_verifyScrollToTheBottomOfAPage() {
         driver.get("https://demo.guru99.com/test/guru99home/");
-        WebElement linuxElement=driver.findElement(By.linkText("Linux"));
-        JavascriptExecutor js=(JavascriptExecutor) driver;
+        WebElement linuxElement = driver.findElement(By.linkText("Linux"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollTo(0,document.body.scrollHeight)");
     }
+
     @Test
     public void TC_039_verifyHorizontalScroll() {
         driver.get("http://demo.guru99.com/test/guru99home/scrolling.html");
-        WebElement vbScriptElement=driver.findElement(By.linkText("VBScript"));
-        JavascriptExecutor js=(JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView();",vbScriptElement);
+        WebElement vbScriptElement = driver.findElement(By.linkText("VBScript"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", vbScriptElement);
     }
+
     @Test
     public void TC_040_verifyTable() throws IOException {
         driver.get("https://www.w3schools.com/html/html_tables.asp");
-        List<WebElement> rowElements=driver.findElements(By.xpath("//table[@id='customers']//tbody//tr"));
-        List<WebElement> columnElements=driver.findElements(By.xpath("//table[@id='customers']//tbody//tr//td"));
-        List<ArrayList<String>> actGridData=TableUtility.get_Dynamic_TwoDimension_TablElemnts(rowElements,columnElements);
-        List<ArrayList<String>> expGridData=ExcelUtility.excelDataReader("\\src\\test\\resources\\TestData.xlsx","Table");
-        Assert.assertEquals(actGridData,expGridData,"Invalid data found in table");
+        List<WebElement> rowElements = driver.findElements(By.xpath("//table[@id='customers']//tbody//tr"));
+        List<WebElement> columnElements = driver.findElements(By.xpath("//table[@id='customers']//tbody//tr//td"));
+        List<ArrayList<String>> actGridData = TableUtility.get_Dynamic_TwoDimension_TablElemnts(rowElements, columnElements);
+        List<ArrayList<String>> expGridData = ExcelUtility.excelDataReader("\\src\\test\\resources\\TestData.xlsx", "Table");
+        Assert.assertEquals(actGridData, expGridData, "Invalid data found in table");
     }
+
+    @Test
+    public void TC_041_verifyTableContantAndPrintTheValue() throws IOException {
+        driver.get("https://www.w3schools.com/html/html_tables.asp");
+        List<WebElement> rowElements = driver.findElements(By.xpath("//table[@id='customers']//tbody//tr"));
+        List<WebElement> columnElements = driver.findElements(By.xpath("//table[@id='customers']//tbody//tr//td"));
+        List<ArrayList<String>> actGridData = TableUtility.get_Dynamic_TwoDimension_TablElemnts(rowElements, columnElements);
+        List<ArrayList<String>> expGridData = ExcelUtility.excelDataReader("\\src\\test\\resources\\TestData.xlsx", "Table");
+        Assert.assertEquals(actGridData, expGridData, "Invalid data found in table");
+//        ArrayList<String>(Arrays.asList(columnList));
+//        TableUtility.get_Dynamic_TwoDimension_TablElemnts(rowElements,columnElements).contains("Island Trading");
+//        System.out.println(TableUtility.get_Dynamic_TwoDimension_TablElemnts(rowElements,columnElements));
+
+        if (TableUtility.get_Dynamic_TwoDimension_TablElemnts(rowElements, columnElements).contains("Island Trading")) ;
+        {
+            List<ArrayList<String>> rowList = new ArrayList<ArrayList<String>>();
+            int x = 0;                                               //Controlling the cell values
+            for (int i = 0; i < 2; i++) {                        // Iterating each row
+                for (int j = 0; j < 2; j++) {        // Iterating each array
+                    rowList = TableUtility.get_Dynamic_TwoDimension_TablElemnts(rowElements, columnElements);
+                    x++;
+                }
+            }
+        }
+    }
+
+    @Test
+    public void TC_042_verifyFileUploadUsingRobotClass() throws AWTException, InterruptedException {
+        driver.get("https://www.foundit.in/seeker/registration");
+        StringSelection s = new StringSelection("D:\\Selenium\\test.txt");               // Copy to clipboard //
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, null);
+        WebElement chooseFile = driver.findElement(By.xpath("//span[text()='Choose CV']"));
+        chooseFile.click();
+        Thread.sleep(2000);
+        Robot r = new Robot();
+        r.keyPress(KeyEvent.VK_ENTER);
+        r.keyRelease(KeyEvent.VK_ENTER);
+        Thread.sleep(2000);
+        r.keyPress(KeyEvent.VK_CONTROL);
+        r.keyPress(KeyEvent.VK_V);
+        r.keyRelease(KeyEvent.VK_CONTROL);
+        r.keyRelease(KeyEvent.VK_V);
+        Thread.sleep(2000);
+        r.keyPress(KeyEvent.VK_ENTER);
+        r.keyRelease(KeyEvent.VK_ENTER);
+
+    }
+
+
 }

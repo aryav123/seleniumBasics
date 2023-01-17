@@ -13,13 +13,13 @@ public class TableUtility {
         String[] columnList = new String[colnmSize / rSize];
 
         List<ArrayList<String>> gridData = new ArrayList<ArrayList<String>>();
-        int x = 0;
-        for (int i = 0; i < rSize; i++) {
-            for (int j = 0; j < columnList.length; j++) {
+        int x = 0;                                               //Controlling the cell values
+        for (int i = 0; i < rSize; i++) {                        // Iterating each row
+            for (int j = 0; j < columnList.length; j++) {        // Iterating each array
                 columnList[j] = columnItems.get(x).getText();
                 x++;
             }
-            gridData.add(new ArrayList<String>(Arrays.asList(columnList)));
+            gridData.add(new ArrayList<String>(Arrays.asList(columnList))); // Converting array to array list
         }
         return gridData;
     }
